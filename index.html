@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>We Will Survive</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        #counter {
+            font-size: 24px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>We Will Survive</h1>
+    <div id="counter">Verbleibende Zeit: Berechnung läuft...</div>
+
+    <script>
+        const totalHours = 3 * 4; // 3 Tage mit je 4 Stunden
+        let totalMinutes = totalHours * 60; // Gesamte Minuten
+
+        function updateCounter() {
+            const now = new Date();
+            const currentHour = now.getHours();
+            const currentMinutes = now.getMinutes();
+
+            // Prüfen, ob die aktuelle Zeit zwischen 9 und 13 Uhr liegt
+            if (currentHour >= 9 && currentHour < 13 && totalMinutes > 0) {
+                const minutesPassedToday = (currentHour - 9) * 60 + currentMinutes; // Minuten seit 09:00 Uhr
+                totalMinutes -= minutesPassedToday; // Ziehe die Minuten, die heute vergangen sind, von der Gesamtzeit ab
+
+                // Berechne verbleibende Stunden und Minuten
+                const remainingHours = Math.floor(totalMinutes / 60);
+                const remainingMinutes = totalMinutes % 60;
+
+                // Formatiere die Zeit als hh:mm
+                const formattedTime = `${String(remainingHours).padStart(2, '0')}:${String(remainingMinutes).padStart(2, '0')}`;
+                document.getElementById('counter').innerText = `Verbleibende Zeit: ${formattedTime}`;
+            }
+
+            if (totalMinutes <= 0) {
+                document.getElementById('counter').innerText = "Countdown abgeschlossen!";
+                clearInterval(interval);
+            }
+        }
+
+        // Überprüft jede Minute, ob die Bedingung für den Countdown erfüllt ist
+        const interval = setInterval(updateCounter, 60 * 1000); // 1 Minute in Millisekunden
+
+        // Initialer Aufruf, um den Counter direkt nach dem Laden der Seite zu aktualisieren
+        updateCounter();
+    </script>
+</body>
+
+</html>
